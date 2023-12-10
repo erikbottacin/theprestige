@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="JAVASCRIPT" href="javas.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+   
+   <!-- parte iniziale -->
+   <h1 class="ml3">Did you watch it closely?</h1>
+   <script>var textWrapper = document.querySelector('.ml3');
+    textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+    
+    anime.timeline({loop: false})
+      .add({
+        targets: '.ml3 .letter',
+        opacity: [0,1],
+        easing: "easeInOutQuad",
+        duration: 2250,
+        delay: (el, i) => 150 * (i+1)
+      
+      });
+
+      // script animazione linea
+
+      let paths = document.querySelectorAll('svg path');
+
+  paths.forEach((path) => {
+  let pathLength = path.getTotalLength();
+  path.style.strokeDasharray = pathLength + ' ' + pathLength;
+  path.style.strokeDashoffset = pathLength;
+
+  window.addEventListener('scroll', () => {
+    
+    // quanto giù in percentuale stiamo scrollando
+    var scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+    
+    // lunghezza per compensare i tratteggi
+    var  drawLength = pathLength * scrollPercentage;
+
+    // draw in reverse
+    path.style.strokeDashoffset = pathLength - drawLength;
+ 
+  });
+});
+      
+      </script>
+
+
+    <svg id="movingSVG" width="136" height="2000" viewBox="0 0 136 2000" fill="none">
+        <circle id="movingCircle" cx="68" cy="68" r="68" fill="#890202"/>
+    </svg>
+    
+    <!--  index html da mettere sotto --> 
+    <div class="line-container"> 
+        <svg width="229" height="2378" viewBox="0 0 229 2378" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M159.5 0L163 255C164.167 262.833 164.9 282.5 158.5 298.5C150.5 318.5 141.5 338 131.5 341.5C121.5 345 116.5 337.5 103 321C89.4999 304.5 89.9999 313 87.4999 311.5C84.9999 310 87.4999 306 85.9999 298.5C84.4999 291 89.4999 283.5 80.9999 255C72.4999 226.5 78.4999 235.5 87.4999 238C96.4999 240.5 107 259.5 126.5 258C146 256.5 157 277.5 156.5 289C156 300.5 154.5 350.5 150.5 360C146.5 369.5 170.5 392 185.5 393C200.5 394 215 401 225 386.5L188.325 363L156.825 397L146.729 449.5C142.155 469.771 137.135 494.746 131.5 525C125.5 535.5 109.1 560 91.5 574L52 591.5L16 600V610.5L26 615.5L3.99995 631L20 646.5L171 557.5L200.5 435.5L179.5 408L85.5 440L77.5 463.5L89 476.5L77.5 487L26 539L20 574L41.5 615.5L85 629L160 657.5L216 740.5L225 843.5V1223.5V1552V2381" stroke="#1400FF" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+      </div>
+
+    <script>
+    // Create newSVG element when the page loads
+    const newSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    newSVG.setAttribute('id', 'newSVG');
+    newSVG.setAttribute('width', '498');
+    newSVG.setAttribute('height', '320');
+    newSVG.setAttribute('viewBox', '0 0 498 320');
+    newSVG.innerHTML = `
+        <ellipse cx="249" cy="41.5" rx="249" ry="41.5" fill="#D9D9D9"/>
+        <rect  x="58" y="19" width="381" height="339" rx="17" fill="#D9D9D9"/>
+    `;
+    document.body.appendChild(newSVG);
+    newSVG.style.position = 'absolute';
+    newSVG.style.top = '1000px';
+    
+
+    const movingCircle = document.getElementById('movingCircle');
+    let textAnimationStarted = false;
+
+    function updateCirclePosition() {
+        const scrollY = window.scrollY;
+        const scrollPercentage = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        const y = 2000 * scrollPercentage;
+        const newSVGTop = parseInt(newSVG.style.top, 10);
+    let opacity;
+
+    if (y + 68 < newSVGTop + 100) {
+        opacity = 1 - (y + 68) / (newSVGTop + 100);// Calculate opacity based on the y-coordinate of the circle and the top position of the newSVG element
+    } else {
+        opacity = 0; // Make the circle completely invisible when it reaches the newSVG element
+        if (!textAnimationStarted) {
+            startTextAnimation();
+            textAnimationStarted = true;
+        }
+    
+    
+    
+    }
+        gsap.to(movingCircle, { duration: 0.5, attr: { cy: y + 68 }, opacity: opacity  });
+        
+        
+        if (y + 68 >= 1000) {
+            
+            
+        
+            movingCircle.style.visibility = 'visible';
+           
+        }
+    }
+
+    window.onscroll = updateCirclePosition;
+    </script>
+</body>
+</html>

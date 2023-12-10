@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!-- <script src="js/main.js"></script> collegamento al js, ma non si animano le linee, mentre mantenendolo nello script sotto si--> 
+  </head>
+<body>
+ 
+  <div class="line-container"> 
+  <svg width="510" height="2390" viewBox="0 0 510 2390" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M159.5 3L163 258C164.167 265.833 164.9 285.5 158.5 301.5C150.5 321.5 141.5 341 131.5 344.5C121.5 348 116.5 340.5 103 324C89.4999 307.5 89.9999 316 87.4999 314.5C84.9999 313 87.4999 309 85.9999 301.5C84.4999 294 89.4999 286.5 80.9999 258C72.4999 229.5 78.4999 238.5 87.4999 241C96.4999 243.5 107 262.5 126.5 261C146 259.5 157 280.5 156.5 292C156 303.5 154.5 353.5 150.5 363C146.5 372.5 170.5 395 185.5 396C200.5 397 215 404 225 389.5L188.325 366L156.825 400L146.729 452.5C142.155 472.771 137.135 497.746 131.5 528C125.5 538.5 109.1 563 91.5 577L52 594.5L16 603V613.5L26 618.5L3.99995 634L20 649.5L171 560.5L200.5 438.5L179.5 411L85.5 443L77.5 466.5L89 479.5L77.5 490L26 542L20 577L41.5 618.5L85 632L160 660.5L216 743.5L225 846.5V1226.5V1555" stroke="#1400FF" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+  </div>
+ 
+  <section class="one">
+    <h1 class="scroll" data-rate=".4" data-direction="vertical">The Prestige</h1>
+    <h2 class="subtitle">Did you watch it closely?</h2>
+  </section>
+
+ <section class="two">
+    <h1 class="scroll" data-rate=".2" data-direction="vertical">Succede qualcosa</h1>
+    <p>Scena 1</p>
+  </section>
+
+<script>
+let paths = document.querySelectorAll('path');
+
+paths.forEach((path) => {
+  let pathLength = path.getTotalLength();
+  path.style.strokeDasharray = pathLength + ' ' + pathLength;
+  path.style.strokeDashoffset = pathLength;
+
+  window.addEventListener('scroll', () => {
+    
+    // quanto giù in percentuale stiamo scrollando
+    var scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+    
+    // lunghezza per compensare i tratteggi
+    var  drawLength = pathLength * scrollPercentage;
+
+    // draw in reverse
+    path.style.strokeDashoffset = pathLength - drawLength;
+ 
+  });
+});
+</script>
+
+</body>
+</html>
